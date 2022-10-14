@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace WebApplication4.Data.Repository
@@ -43,6 +44,13 @@ namespace WebApplication4.Data.Repository
         {
             _dbSet.Update(model);
             await CommitChangesAsync();
+        }
+        public async Task<List<T>> ExecSql(string departmentName)
+        {
+            var param = new SqlParameter("@deptname", departmentName);
+            //var result = _dbSet.FromSqlInterpolated($"exec getstudentsbydept {departmentName}").AsNoTracking().ToList();
+            var result = await _dbSet.FromSqlRaw("exec getstudentsbydept {0}", param).AsNoTracking().ToListAsync();
+            return result;
         }
     }
 }

@@ -10,5 +10,6 @@ namespace WebApplication4.Data.Repository
         Task UpdateAsync(T model);
         Task DeleteAsync(T model);
         Task CommitChangesAsync();
+        Task<List<T>> ExecSql(string departmentName);
     }
 }

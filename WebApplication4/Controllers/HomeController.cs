@@ -11,28 +11,34 @@ namespace WebApplication4.Controllers
 {
     [ApiController]
     [Route("api/Home")]
-    [Authorize]
+    //[Authorize(Roles = "Student")]
     public class HomeController : ControllerBase
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUniversityRepository<Student> _studentRepository;
+        private readonly IUniversityRepository<StudentWithDept> _studentDeptRepository;
         private readonly IMapper _mapper;
         private APIResponse _response;
-        public HomeController(ILogger<HomeController> logger, IUniversityRepository<Student> studentRepository, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger, 
+            IUniversityRepository<Student> studentRepository, 
+            IMapper mapper, IUniversityRepository<StudentWithDept> studentDeptRepository)
         {
             _logger = logger;
             _studentRepository = studentRepository;
             _mapper = mapper;
+            _studentDeptRepository = studentDeptRepository;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetStudentsAsync()
         {
             try
             {
                 _logger.LogInformation("Get All Students");
+                //var data = await _studentDeptRepository.ExecSql("ECE");
 
                 List<StudentDTO> result = _mapper.Map<List<StudentDTO>>(await _studentRepository.GetAllAsync());
                 _response = new APIResponse(System.Net.HttpStatusCode.OK, true, result);
