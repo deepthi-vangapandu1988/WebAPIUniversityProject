@@ -10,6 +10,7 @@ namespace WebApplication4.Data
 
         }
         public DbSet<Student> Students { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +42,32 @@ namespace WebApplication4.Data
                     Name = "Student 4",
                     Email = "Student3@gmail.com",
                     Address = "HYD"
+                });
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    Fullname = "Student 1",
+                    Username = "Student1",
+                    Password = "Password1",
+                    Role = "Student"
+                },
+                new User
+                {
+                    Id = 2,
+                    Fullname = "Student 2",
+                    Username = "Student2",
+                    Password = "Password2",
+                    Role = "Student"
+                },
+                new User
+                {
+                    Id = 3,
+                    Fullname = "Student 3",
+                    Username = "Student3",
+                    Password = "Password3",
+                    Role = "Student"
                 });
         }
     }

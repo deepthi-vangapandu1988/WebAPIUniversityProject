@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication4.Data;
@@ -10,6 +11,7 @@ namespace WebApplication4.Controllers
 {
     [ApiController]
     [Route("api/Home")]
+    [Authorize]
     public class HomeController : ControllerBase
     {
         private readonly ILogger<HomeController> _logger;
@@ -31,35 +33,9 @@ namespace WebApplication4.Controllers
             try
             {
                 _logger.LogInformation("Get All Students");
-                //_logger.LogDebug(JsonConvert.SerializeObject(await _studentRepository.GetAllAsync()));
-
-                //List<StudentDTO> result = await _db.Students.Select(n => new StudentDTO
-                //{
-                //    Id = n.Id,
-                //    Name = n.Name,
-                //    Email = n.Email,
-                //    Address = n.Address
-                //}).ToListAsync();
-
 
                 List<StudentDTO> result = _mapper.Map<List<StudentDTO>>(await _studentRepository.GetAllAsync());
-                _response.Data = result;
-                //Async always returns Task<Result>
-                //Async will return Result when you use await
-
-                //var r = _db.Students.ToList();
-                //var list = new List<StudentDTO>();
-                //foreach (var item in r)
-                //{
-                //    var i = new StudentDTO
-                //    {
-                //        Id = item.Id,
-                //        Name = item.Name,
-                //        Email = item.Email,
-                //        Address = item.Address
-                //    };
-                //    list.Add(i);
-                //}
+                _response = new APIResponse(System.Net.HttpStatusCode.OK, true, result);
             }
             catch (Exception ex)
             {
@@ -86,13 +62,6 @@ namespace WebApplication4.Controllers
                     return new APIResponse(System.Net.HttpStatusCode.NotFound, false, "Record not found");
                 }
 
-                //StudentDTO result = new StudentDTO()
-                //{
-                //    Id = student.Id,
-                //    Name = student.Name,
-                //    Email = student.Email,
-                //    Address = student.Address,
-                //};
                 StudentDTO result = _mapper.Map<StudentDTO>(student);
             }
             catch (Exception ex)
@@ -118,22 +87,9 @@ namespace WebApplication4.Controllers
             if (model == null)
                 return BadRequest();
 
-            //Student student = new Student()
-            //{
-            //    Name = model.Name,
-            //    Email = model.Email,
-            //    Address = model.Address
-            //};
             Student student = _mapper.Map<Student>(model);
             await _studentRepository.CreateAsync(student);
 
-            //StudentDTO result = new StudentDTO()
-            //{
-            //    Id = student.Id,
-            //    Name = student.Name,
-            //    Email = student.Email,
-            //    Address = student.Address,
-            //};
             StudentDTO result = _mapper.Map<StudentDTO>(student);
 
             return CreatedAtRoute("GetStudentById", new { id = result.Id }, result);
@@ -151,20 +107,10 @@ namespace WebApplication4.Controllers
             if (student == null)
                 return NotFound();
 
-            //student.Name = model.Name;
-            //student.Email = model.Email;
-            //student.Address = model.Address;
             _mapper.Map(model, student);
 
             await _studentRepository.UpdateAsync(student);
 
-            //StudentDTO result = new StudentDTO()
-            //{
-            //    Id = student.Id,
-            //    Name = student.Name,
-            //    Email = student.Email,
-            //    Address = student.Address,
-            //};
             StudentDTO result = _mapper.Map<StudentDTO>(student);
             return Ok(result);
         }
