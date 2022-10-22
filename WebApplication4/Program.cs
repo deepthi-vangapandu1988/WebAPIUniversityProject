@@ -94,6 +94,14 @@ builder.Services.AddDbContext<UniversityDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("UniversityDB"));
 });
+builder.Services.AddCors(options => options.AddPolicy("TestPolicy", builder =>
+{
+    //mention multiple origins to allow
+    //builder.WithOrigins("http://example.com", "http://www.contoso.com").AllowAnyMethod().AllowAnyHeader();
+    //allow all origins
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    //for more info https://learn.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-6.0
+}));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
