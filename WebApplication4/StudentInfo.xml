@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Students>
+	<Student class="10">
+		<Name>Student1</Name>
+		<Id>1</Id>
+		<Email>st1@gmail.com</Email>
+		<Address>Hyd</Address>
+		<Marks>100</Marks>
+	</Student>
+	<Student class="10">
+		<Name>Student2</Name>
+		<Id>2</Id>
+		<Email>st2@gmail.com</Email>
+		<Address>Hyd</Address>
+		<Marks>80</Marks>
+	</Student>
+	<Student class="10">
+		<Name>Student3</Name>
+		<Id>3</Id>
+		<Email>st3@gmail.com</Email>
+		<Address>Hyd</Address>
+		<Marks>50</Marks>
+	</Student>
+	<Student class="9">
+		<Name>Student4</Name>
+		<Id>4</Id>
+		<Email>st4@gmail.com</Email>
+		<Address>Hyd</Address>
+		<Marks>60</Marks>
+	</Student>
+	<Student class="9">
+		<Name>Student5</Name>
+		<Id>5</Id>
+		<Email>st5@gmail.com</Email>
+		<Address>Hyd</Address>
+		<Marks>70</Marks>
+	</Student>
+	<Student class="9">
+		<Id>6</Id>
+		<Name>Student6</Name>
+		<Email>St6@gmail.com</Email>
+		<Address>Banglore</Address>
+		<Marks>120</Marks>
+	</Student>
+</Students>
