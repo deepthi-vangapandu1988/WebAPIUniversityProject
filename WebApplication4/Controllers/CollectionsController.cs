@@ -9,8 +9,10 @@ using System.Linq;
 
 namespace WebApplication4.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class CollectionsController : ControllerBase
     {
         private readonly UniversityDbContext _db;
@@ -23,6 +25,7 @@ namespace WebApplication4.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<APIResponse>> GetStudentsAsync()
         {
             try
@@ -91,6 +94,12 @@ namespace WebApplication4.Controllers
                 return new APIResponse(System.Net.HttpStatusCode.InternalServerError, false, ex.Message);
             }
             return null;
+        }
+        [HttpGet]
+        [MapToApiVersion("2.0")]
+        public async Task<string> GetAsync()
+        {
+            return "2nd version";
         }
     }
 }

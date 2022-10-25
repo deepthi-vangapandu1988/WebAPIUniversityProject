@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,40 @@ builder.Services.AddSwaggerGen(options =>
             new List<string>()
         }
     });
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1.0",
+        Title = "University API v1",
+        Description = "API to manage University data",
+        TermsOfService = new Uri("http://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Example contact",
+            Url = new Uri("http://example.com/contact")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example license",
+            Url = new Uri("http://example.com/license")
+        }
+    });
+    options.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Version = "v2.0",
+        Title = "University API v2",
+        Description = "API to manage University data",
+        TermsOfService = new Uri("http://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Example contact",
+            Url = new Uri("http://example.com/contact")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example license",
+            Url = new Uri("http://example.com/license")
+        }
+    });
 });
 
 var key = builder.Configuration.GetValue<string>("APISettings:JWTSecret");
@@ -102,13 +137,28 @@ builder.Services.AddCors(options => options.AddPolicy("TestPolicy", builder =>
     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     //for more info https://learn.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-6.0
 }));
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "University API");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "University API");
+    });
 }
 
 app.UseHttpsRedirection();
