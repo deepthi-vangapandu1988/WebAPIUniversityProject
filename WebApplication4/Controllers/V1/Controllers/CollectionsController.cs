@@ -7,12 +7,11 @@ using WebApplication4.Data;
 using WebApplication4.Models;
 using System.Linq;
 
-namespace WebApplication4.Controllers
+namespace WebApplication4.Controllers.V1.Controllers
 {
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    [ApiVersion("2.0")]
     public class CollectionsController : ControllerBase
     {
         private readonly UniversityDbContext _db;
@@ -44,7 +43,7 @@ namespace WebApplication4.Controllers
                 list = query.ToList();
 
                 IEnumerable<Student> lis = _db.Students;
-                    var d = lis.Where(n => n.Id % 2 == 0).ToList();
+                var d = lis.Where(n => n.Id % 2 == 0).ToList();
 
 
 
@@ -59,9 +58,9 @@ namespace WebApplication4.Controllers
 
                 //IQueryable<Student> ss = students_Li.Where(n => n.Id == 0); not possible
 
-                var list1 = students_En.Where(n => n.Id %2 ==0).ToList();
-                var list2 = students_En.Where(n => n.Id %2 !=0).ToList();
-                var list3 = students_Co.Where(n => n.Id %2 !=0).ToList();
+                var list1 = students_En.Where(n => n.Id % 2 == 0).ToList();
+                var list2 = students_En.Where(n => n.Id % 2 != 0).ToList();
+                var list3 = students_Co.Where(n => n.Id % 2 != 0).ToList();
                 foreach (var item in students_En)
                 {
                     Console.WriteLine(item.Name);
@@ -94,12 +93,6 @@ namespace WebApplication4.Controllers
                 return new APIResponse(System.Net.HttpStatusCode.InternalServerError, false, ex.Message);
             }
             return null;
-        }
-        [HttpGet]
-        [MapToApiVersion("2.0")]
-        public async Task<string> GetAsync()
-        {
-            return "2nd version";
         }
     }
 }
